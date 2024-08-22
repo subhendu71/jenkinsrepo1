@@ -1,10 +1,20 @@
 pipeline{
-    agent any
+    agent{
+        node{
+            lable1 'jenkinsSlaveNodeLablel'
+        }
+    }
     stages{
         stage("checkout code stage"){
             steps{
                 git url:https: '//github.com/subhendu71/jenkinsrepo1.git', branch:'main'
             }
+        }
+    }
+    stages('cleanup'){
+        steps{
+            sh 'docker rm -f $(docker ps -aq)'
+            sh 'docker rmi -f myimage'
         }
     }
     stage("Build docker image"){
